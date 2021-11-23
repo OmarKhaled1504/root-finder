@@ -2,6 +2,14 @@ import math
 import timeit
 
 
+# derivative function not used yet
+
+def derivative(f, x, dx=1e-6):
+    df = f(x + dx) - f(x - dx)
+    g = df / (2 * dx)
+    return g
+
+
 def bisection(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
@@ -95,14 +103,54 @@ def secant(xl, xu, es=0.00001, imax=50):
     return xr, ea, iterations, iterationsList, (end - start)
 
 
+def Fixed_point(xl, xu, es, imax):
+    start = timeit.default_timer()
+    iterations = 0
+    print("*******Fixed point*******")
+    if f(xl) * f(xu) >= 0:
+        print("Cannot find a root with in the given interval with Fixed point")
+        return
+    else:
+        print('')
+
+
+def Newton_Raphson(xi, es=0.00001, imax=50):
+    start = timeit.default_timer()
+    iterations = 0
+    print("*******Newton Raphson*******")
+    x = xi
+    iterationsList = []
+    for i in range(imax):
+        iterations += 1
+        xp = x
+        fx = f(x)
+        gx = g(x)
+        x = x - (fx / gx)
+        ea = abs((x - xp) / x) * 100
+        iterationsList.append(
+            "Iteration #%d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
+        if ea < es:
+            break
+        end = timeit.default_timer()
+        for iteration in iterationsList:
+            print(iteration)
+        print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
+        return x, ea, iterations, iterationsList, (end - start)
+
+
 def f(x):
     return math.exp(-x) - x
+
+
+def g(x):
+    return -(math.exp(-x)) - 1
 
 
 if __name__ == '__main__':
     xl = -2
     xu = 4
-
+    xi = 0.5
     bisection(xl, xu)
     false_position(xl, xu)
     secant(xl, xu)
+    Newton_Raphson(xi)
