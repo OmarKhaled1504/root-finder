@@ -103,15 +103,10 @@ def secant(xl, xu, es=0.00001, imax=50):
     return xr, ea, iterations, iterationsList, (end - start)
 
 
-def fixed_point(xl, xu, es, imax):
+def fixed_point(,es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
     print("*******Fixed point*******")
-    if f(xl) * f(xu) >= 0:
-        print("Cannot find a root with in the given interval with Fixed point")
-        return
-    else:
-        print('')
 
 
 def newton_raphson(xi, es=0.00001, imax=50):
