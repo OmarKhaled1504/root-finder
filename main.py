@@ -2,7 +2,6 @@ import math
 import timeit
 
 
-# derivative function not used yet
 
 
 def bisection(xl, xu, es=0.00001, imax=50):
