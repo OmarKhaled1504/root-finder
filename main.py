@@ -103,7 +103,7 @@ def secant(xl, xu, es=0.00001, imax=50):
     return xr, ea, iterations, iterationsList, (end - start)
 
 
-def Fixed_point(xl, xu, es, imax):
+def fixed_point(xl, xu, es, imax):
     start = timeit.default_timer()
     iterations = 0
     print("*******Fixed point*******")
@@ -114,7 +114,7 @@ def Fixed_point(xl, xu, es, imax):
         print('')
 
 
-def Newton_Raphson(xi, es=0.00001, imax=50):
+def newton_raphson(xi, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
     print("*******Newton Raphson*******")
@@ -128,7 +128,7 @@ def Newton_Raphson(xi, es=0.00001, imax=50):
         x = x - (fx / gx)
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
-            "Iteration #%d, xi = %.16f, f(xi) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
+            "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
         if ea < es:
             break
     end = timeit.default_timer()
@@ -153,4 +153,4 @@ if __name__ == '__main__':
     bisection(xl, xu)
     false_position(xl, xu)
     secant(xl, xu)
-    Newton_Raphson(xi)
+    newton_raphson(xi)
