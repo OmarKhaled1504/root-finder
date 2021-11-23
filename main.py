@@ -2,8 +2,6 @@ import math
 import timeit
 
 
-
-
 def bisection(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
@@ -97,10 +95,28 @@ def secant(xl, xu, es=0.00001, imax=50):
     return xr, ea, iterations, iterationsList, (end - start)
 
 
-def fixed_point(es=0.00001, imax=50):
+def fixed_point(xi, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
     print("*******Fixed point*******")
+    x = xi
+    iterationsList = []
+    # gx=function g equation
+    for i in range(imax):
+        iterations += 1
+        xp = x
+        # x = gx(x)
+
+        ea = abs((x - xp) / x) * 100
+        iterationsList.append(
+            "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
+        if ea < es:
+            break
+    end = timeit.default_timer()
+    for iteration in iterationsList:
+        print(iteration)
+    print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
+    return x, ea, iterations, iterationsList, (end - start)
 
 
 def newton_raphson(xi, es=0.00001, imax=50):
