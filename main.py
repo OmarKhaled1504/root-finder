@@ -4,11 +4,6 @@ import timeit
 
 # derivative function not used yet
 
-def derivative(f, x, dx=1e-6):
-    df = f(x + dx) - f(x - dx)
-    g = df / (2 * dx)
-    return g
-
 
 def bisection(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
@@ -103,7 +98,7 @@ def secant(xl, xu, es=0.00001, imax=50):
     return xr, ea, iterations, iterationsList, (end - start)
 
 
-def fixed_point(,es=0.00001, imax=50):
+def fixed_point(es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
     print("*******Fixed point*******")
@@ -118,9 +113,9 @@ def newton_raphson(xi, es=0.00001, imax=50):
     for i in range(imax):
         iterations += 1
         fx = f(x)
-        gx = g(x)
+
         xp = x
-        x = x - (fx / gx)
+        x = x - (fx / derivative(x))
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
@@ -137,8 +132,9 @@ def f(x):
     return math.exp(-x) - x
 
 
-def g(x):
-    return -(math.exp(-x)) - 1
+def derivative(x, dx=1e-6):
+    df = f(x + dx) - f(x - dx)
+    return df / (2 * dx)
 
 
 if __name__ == '__main__':
