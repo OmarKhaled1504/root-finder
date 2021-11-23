@@ -101,11 +101,10 @@ def fixed_point(xi, es=0.00001, imax=50):
     print("*******Fixed point*******")
     x = xi
     iterationsList = []
-    # gx=function g equation
     for i in range(imax):
         iterations += 1
         xp = x
-        # x = gx(x)
+        x = g(x)
 
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
@@ -144,7 +143,11 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    return math.exp(-x) - x
+    return math.e ** -x - x
+
+
+def g(x):
+    return math.e ** -x
 
 
 def derivative(x, dx=1e-6):
@@ -160,3 +163,4 @@ if __name__ == '__main__':
     false_position(xl, xu)
     secant(xl, xu)
     newton_raphson(xi)
+    fixed_point(xi)
