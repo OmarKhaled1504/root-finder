@@ -122,20 +122,20 @@ def Newton_Raphson(xi, es=0.00001, imax=50):
     iterationsList = []
     for i in range(imax):
         iterations += 1
-        xp = x
         fx = f(x)
         gx = g(x)
+        xp = x
         x = x - (fx / gx)
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
-            "Iteration #%d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
+            "Iteration #%d, xi = %.16f, f(xi) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
         if ea < es:
             break
-        end = timeit.default_timer()
-        for iteration in iterationsList:
-            print(iteration)
-        print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
-        return x, ea, iterations, iterationsList, (end - start)
+    end = timeit.default_timer()
+    for iteration in iterationsList:
+        print(iteration)
+    print("Root = ", x, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
+    return x, ea, iterations, iterationsList, (end - start)
 
 
 def f(x):
