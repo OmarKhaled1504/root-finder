@@ -31,7 +31,7 @@ def bisection(xl, xu, es=0.00001, imax=50):
 
         for iteration in iterationsList:
             print(iteration)
-        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\n Runtime: ", (end - start))
+        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
     return xr, ea, iterations, iterationsList, (end - start)
 
 
@@ -60,7 +60,7 @@ def false_position(xl, xu, es=0.00001, imax=50):
         end = timeit.default_timer()
         for iteration in iterationsList:
             print(iteration)
-        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\n Runtime: ", (end - start))
+        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
     return xr, ea, iterations, iterationsList, (end - start)
 
 
@@ -91,7 +91,7 @@ def secant(xl, xu, es=0.00001, imax=50):
         end = timeit.default_timer()
         for iteration in iterationsList:
             print(iteration)
-        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\n Runtime: ", (end - start))
+        print("Root = ", xr, "Precision: ", ea, "\n# of iterations = ", iterations, "\nRuntime: ", (end - start))
     return xr, ea, iterations, iterationsList, (end - start)
 
 
