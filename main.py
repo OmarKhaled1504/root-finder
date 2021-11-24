@@ -75,15 +75,15 @@ def secant(xl, xu, es=0.00001, imax=50):
         iterationsList = []
         for i in range(imax):
             iterations += 1
+            xr = xl - (f(xl) * (xu - xl) / (f(xu) - f(xl)))
+            # xr = ((xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl)))
 
-            xr = ((xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl)))
-            test = f(xl) * f(xr)
             xl = xu
             xu = xr
-            if test == 0:
+            ea = math.fabs((xr - xl) / xr)
+            if ea < es:
                 break
-            xm = ((xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl)))
-            ea = math.fabs(xm - xr)
+
             iterationsList.append(
                 "Iteration #%d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (iterations, xr, f(xr), ea))
             if ea < es:
