@@ -143,7 +143,8 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    return math.e ** -x - x
+    function = 'math.e ** -x - x'    #should be taken as string input from gui
+    return eval(function)
 
 
 def g(x):

@@ -16,7 +16,6 @@ from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-
 screen_helper = """
 ScreenManager:
     HomeScreen:
@@ -322,27 +321,30 @@ class ItScreen(Screen):
         self.viewer = ExampleViewer()
         self.add_widget(self.viewer)
 
+
 class ExampleViewer(RecycleView):
     def __init__(self, **kwargs):
         super(ExampleViewer, self).__init__(**kwargs)
         self.data = [{'text': str(x)} for x in Global.OUT_ITERATIONS]
 
+
 class Tab(TabbedPanel):
     pass
+
+
 class CustomDropDown(DropDown):
     pass
 
 
 class HomeScreen(Screen):
     def __init__(self, **kwargs):
-
         super(HomeScreen, self).__init__(**kwargs)
         self.dropdown = CustomDropDown()
 
         # Creating a self widget button
         self.mainbutton = Button(text='Choose Method',
-                                 size_hint_x=0.5, size_hint_y=0.1, background_color = (1.0, 0.0, 0.0, 1.0),
-                                 pos_hint = {'center_x': 0.5, 'center_y': 0.23}
+                                 size_hint_x=0.5, size_hint_y=0.1, background_color=(1.0, 0.0, 0.0, 1.0),
+                                 pos_hint={'center_x': 0.5, 'center_y': 0.23}
                                  )
 
         # Added button to FloatLayout so inherits this class
@@ -356,10 +358,10 @@ class HomeScreen(Screen):
         self.dropdown.bind(on_select=lambda \
                 instance, x: setattr(self.mainbutton, 'text', x))
 
-
     def callback(self):
         Global.MY_DATA = self.mainbutton.text
         return
+
 
 class Par2Screen(Screen):
     def callback(self):
@@ -367,16 +369,18 @@ class Par2Screen(Screen):
         xi = float(self.ids.xi.text)
         es = float(self.ids.es.text)
         imax = int(self.ids.imax.text)
-        if(Global.MY_DATA == 'Fixed Point'):
+        if (Global.MY_DATA == 'Fixed Point'):
             (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.fixed_point(xi, es, imax)
-        elif(Global.MY_DATA == 'Newton-Raphson'):
-            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.newton_raphson(xi, es, imax)
+        elif (Global.MY_DATA == 'Newton-Raphson'):
+            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.newton_raphson(xi, es,
+                                                                                                              imax)
         Global.MY_DATA = str(xr)
         it_instance = self.parent.get_screen('it')
         it_instance.set_viewer()
 
         result_instance = self.parent.get_screen('result')
         result_instance.change_label()
+
 
 class Par1Screen(Screen):
     def callback(self):
@@ -386,14 +390,15 @@ class Par1Screen(Screen):
         es = float(self.ids.es.text)
         imax = int(self.ids.imax.text)
         print(Global.MY_DATA)
-        if(Global.MY_DATA == 'Bisection'):
-            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.bisection(xl, xu, es, imax)
-        elif(Global.MY_DATA == 'False Position'):
-            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.false_position(xl, xu, es, imax)
+        if (Global.MY_DATA == 'Bisection'):
+            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.bisection(xl, xu, es,
+                                                                                                         imax)
+        elif (Global.MY_DATA == 'False Position'):
+            (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.false_position(xl, xu,
+                                                                                                              es, imax)
         elif (Global.MY_DATA == 'Secant'):
 
             (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.secant(xl, xu, es, imax)
-
 
         Global.MY_DATA = str(xr)
 
@@ -405,31 +410,27 @@ class Par1Screen(Screen):
         result_instance.change_label()
 
 
-
 class ResultScreen(Screen):
 
     def __init__(self, **kwargs):
         super(ResultScreen, self).__init__(**kwargs)
 
-       # self.tab = Tab()
-       # self.add_widget(self.tab)
+    # self.tab = Tab()
+    # self.add_widget(self.tab)
 
     def change_label(self):
         self.ids.lbl1.text = str(Global.MY_DATA)
         self.ids.lbl2.text = str(Global.OUT_EA)
         self.ids.lbl3.text = str(Global.OUT_ITS)
         self.ids.lbl4.text = str(Global.OUT_TIME)
-    #def set_viewer(self):
-     #   self.viewer = ExampleViewer()
-      #  self.add_widget(self.viewer)
-
+    # def set_viewer(self):
+    #   self.viewer = ExampleViewer()
+    #  self.add_widget(self.viewer)
 
 
 sm = ScreenManager()
 sm.add_widget(HomeScreen(name='home'))
 sm.add_widget(ResultScreen(name='result'))
-
-
 
 
 class RootFinder(App):
@@ -439,16 +440,16 @@ class RootFinder(App):
     def build(self):
         screen = Builder.load_string(screen_helper)
         return screen
+
     def callback(self):
         method = Global.MY_DATA
         print(method)
-        if (method == 'Fixed Point' or method =='Newton-Raphson'):
+        if (method == 'Fixed Point' or method == 'Newton-Raphson'):
             self.root.current = 'par2'
         else:
             self.root.current = 'par'
 
 
 if __name__ == "__main__":
-
     RootFinder().run()
-#root.manager.get_screen('result').label.text = str(self.text)
+# root.manager.get_screen('result').label.text = str(self.text)
