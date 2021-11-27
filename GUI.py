@@ -360,6 +360,7 @@ class HomeScreen(Screen):
 
     def callback(self):
         Global.MY_DATA = self.mainbutton.text
+        Global.EQN = self.ids.input.text
         return
 
 
