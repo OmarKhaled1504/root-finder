@@ -143,12 +143,13 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    function = 'math.e ** -x - x'    #should be taken as string input from gui
+    function = 'math.e ** -x - x'  # should be taken as string input from gui
     return eval(function)
 
 
 def g(x):
-    return math.e ** -x
+    function = 'math.e ** -x'  # should be taken as string input from gui
+    return eval(function)
 
 
 def derivative(x, dx=1e-6):
