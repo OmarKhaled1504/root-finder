@@ -107,6 +107,7 @@ def fixed_point(xi, es=0.00001, imax=50):
         xp = x
         x = f(x)
         ea = abs((x - xp) / x) * 100
+
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
         if ea < es:
@@ -133,6 +134,7 @@ def newton_raphson(xi, es=0.00001, imax=50):
             x = x - (fx / derivative(x))
         except ZeroDivisionError:
             print("division by zero!")
+            exit()
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
@@ -146,23 +148,32 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    function = Global.EQN
-    function = function.replace('ln', 'log')
-    function = function.replace('^', '**')
-    function = function.replace('e', 'math.e')
-    print(function)
-    # should be taken as string input from gui
-    # math.e ** -x - x
-    return eval(function)
+    return x ** 2
 
 
 def g(x):
-    function = 'math.e ** -x'
-    function = function.replace('ln', 'log')
-    function = function.replace('^', '**')
-    function = function.replace('e', 'math.e')
-    # should be taken as string input from gui
-    return eval(function)
+    return math.e ** -x
+
+
+#
+# def f(x):
+#     function = Global.EQN
+#     function = function.replace('ln', 'log')
+#     function = function.replace('^', '**')
+#     function = function.replace('e', 'math.e')
+#     print(function)
+#     # should be taken as string input from gui
+#     # math.e ** -x - x
+#     return eval(function)
+#
+#
+# def g(x):
+#     function = 'math.e ** -x'
+#     function = function.replace('ln', 'log')
+#     function = function.replace('^', '**')
+#     function = function.replace('e', 'math.e')
+#     # should be taken as string input from gui
+#     return eval(function)
 
 
 def derivative(x, dx=1e-6):
@@ -173,7 +184,7 @@ def derivative(x, dx=1e-6):
 if __name__ == '__main__':
     xl = -2
     xu = 4
-    xi = 0.5
+    xi = 0
     bisection(xl, xu)
     false_position(xl, xu)
     secant(xl, xu)
