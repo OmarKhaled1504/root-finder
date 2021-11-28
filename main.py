@@ -2,6 +2,7 @@ import math
 import timeit
 import Global
 
+
 def bisection(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
@@ -143,13 +144,21 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    function = Global.EQN # should be taken as string input from gui
-    #math.e ** -x - x
+    function = Global.EQN
+    function = function.replace('ln', 'log')
+    function = function.replace('^', '**')
+    function = function.replace('e', 'math.e')
+    # should be taken as string input from gui
+    # math.e ** -x - x
     return eval(function)
 
 
 def g(x):
-    function = 'math.e ** -x'  # should be taken as string input from gui
+    function = 'math.e ** -x'
+    function = function.replace('ln', 'log')
+    function = function.replace('^', '**')
+    function = function.replace('e', 'math.e')
+    # should be taken as string input from gui
     return eval(function)
 
 

@@ -8,6 +8,7 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.core.window import Window
+
 import main
 import Global
 
