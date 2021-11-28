@@ -105,8 +105,7 @@ def fixed_point(xi, es=0.00001, imax=50):
     for i in range(imax):
         iterations += 1
         xp = x
-        x = g(x)
-
+        x = f(x)
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
@@ -130,7 +129,10 @@ def newton_raphson(xi, es=0.00001, imax=50):
         fx = f(x)
 
         xp = x
-        x = x - (fx / derivative(x))
+        try:
+            x = x - (fx / derivative(x))
+        except ZeroDivisionError:
+            print("division by zero!")
         ea = abs((x - xp) / x) * 100
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
