@@ -8,7 +8,7 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.core.window import Window
-
+import os
 import main
 import Global
 
@@ -16,10 +16,13 @@ from kivy.properties import StringProperty, ListProperty, ObjectProperty
 from kivymd.app import MDApp
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.boxlayout import BoxLayout
+
 
 screen_helper = """
 ScreenManager:
     HomeScreen:
+    FileScreen:
     Par1Screen:
     Par2Screen:
     ResultScreen:
@@ -81,7 +84,34 @@ ScreenManager:
         background_color : (1.0, 0.0, 0.0, 1.0)
         on_press:  root.callback() 
         on_release:   app.callback()
+    Button:
+        id: button
+        text: "Or read from file"
+        size_hint: (0.2,0.09)
+        pos_hint: {'center_x':0.85,'center_y':0.09}
+        background_color : (1.0, 0.0, 0.0, 1.0)
+        on_press:  root.manager.current = 'file'
+            
+        
     
+<FileScreen>:
+    name:'file'
+    Label:
+        text: "Choose a file"
+        font_size: 18
+        font_style: "H1"
+        pos_hint: {'center_x':0.25,'center_y':0.7}
+        color : "#000000"  
+    FileChooserIconView:
+        id: filechooser
+        canvas.before:
+            Color:
+                rgb: 0.13,0,0
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        on_selection: root.selected(filechooser.selection)
+
     
 <Par1Screen>:
     name: 'par'
@@ -314,6 +344,71 @@ ScreenManager:
         height: self.minimum_height
         orientation: 'vertical' # defines the orientation of data items       
 """
+
+class FileScreen(Screen):
+    def open(self, path, filename):
+        with open(os.path.join(path, filename[0])) as f:
+            print(f.read())
+
+    def selected(self, filename):
+        #print("selected: %s" % filename[0])
+        f = open(filename[0], "r")
+        Global.EQN = f.readline()
+        Global.EQN = Global.EQN.replace('\n','')
+        Global.MY_DATA = f.readline()
+        if(Global.MY_DATA == 'Bisection\n' or Global.MY_DATA == 'False Position\n' or Global.MY_DATA == 'Secant\n' ):
+            xr = ''
+            xl = int(f.readline())
+            xu = int(f.readline())
+            es = float(f.readline())
+            imax = int(f.readline())
+            print(Global.EQN)
+            print(xl)
+            print(xu)
+            print(es)
+            print(imax)
+            print(Global.MY_DATA)
+            if (Global.MY_DATA == 'Bisection\n'):
+
+                (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.bisection(xl, xu, es,
+                                                                                                             imax)
+            elif (Global.MY_DATA == 'False Position\n'):
+                (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.false_position(xl, xu,
+                                                                                                                  es, imax)
+            elif (Global.MY_DATA == 'Secant\n'):
+
+                (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.secant(xl, xu, es, imax)
+
+            Global.MY_DATA = str(xr)
+            print(Global.MY_DATA)
+            # screen2_instance.set_viewer()
+            it_instance = self.parent.get_screen('it')
+            it_instance.set_viewer()
+
+            result_instance = self.parent.get_screen('result')
+            result_instance.change_label()
+            self.manager.current = 'result'
+        elif(Global.MY_DATA == 'Fixed Point\n' or Global.MY_DATA == 'Newton-Raphson\n'):
+            xr = ''
+            xi = float(f.readline())
+            es = float(f.readline())
+            imax = int(f.readline())
+            if (Global.MY_DATA == 'Fixed Point\n'):
+                (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.fixed_point(xi, es,
+                                                                                                               imax)
+            elif (Global.MY_DATA == 'Newton-Raphson\n'):
+                (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.newton_raphson(xi,
+                                                                                                                  es,
+                                                                                                                  imax)
+            Global.MY_DATA = str(xr)
+            it_instance = self.parent.get_screen('it')
+            it_instance.set_viewer()
+
+            result_instance = self.parent.get_screen('result')
+            result_instance.change_label()
+            self.manager.current = 'result'
+
+
 
 
 class ItScreen(Screen):

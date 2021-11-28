@@ -148,6 +148,7 @@ def f(x):
     function = function.replace('ln', 'log')
     function = function.replace('^', '**')
     function = function.replace('e', 'math.e')
+    print(function)
     # should be taken as string input from gui
     # math.e ** -x - x
     return eval(function)
