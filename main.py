@@ -4,9 +4,10 @@ import math
 from math import sin, cos, tan, log
 
 
-def bisection(xl, xu, es=0.00001, imax=50):
+def bisection(xl, xu, es=0.0001, imax=50):
     start = timeit.default_timer()
     iterations = 0
+    ea = 0
     print("*******Bisection*******")
     if f(xl) * f(xu) >= 0:
         print("Cannot find a root with in the given interval with Bisection")
@@ -17,7 +18,11 @@ def bisection(xl, xu, es=0.00001, imax=50):
         for i in range(imax):
             iterations += 1
             xr = (xl + xu) / 2
-            ea = math.fabs((xu - xl) / xl)
+            try:
+                ea = math.fabs((xu - xl) / xl)
+            except ZeroDivisionError:
+                print("division by zero!")
+                break
             iterationsList.append(
                 "Iteration #%d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (iterations, xr, f(xr), ea))
             test = f(xl) * f(xr)
@@ -40,6 +45,7 @@ def bisection(xl, xu, es=0.00001, imax=50):
 def false_position(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
+    ea = 0
     print("******Regula-Falsi******")
     if f(xl) * f(xu) >= 0:
         print("Cannot find a root with in the given interval with Regula-Falsi")
@@ -49,7 +55,12 @@ def false_position(xl, xu, es=0.00001, imax=50):
         iterationsList = []
         for i in range(imax):
             iterations += 1
-            xr = (xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl))
+            try:
+                xr = (xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl))
+            except ZeroDivisionError:
+                print("division by zero!")
+                break
+
             ea = math.fabs(f(xr))
             iterationsList.append(
                 "Iteration #%d, xr = %.16f, f(xr) = %.16f and precision: %.16f " % (iterations, xr, f(xr), ea))
@@ -69,6 +80,7 @@ def false_position(xl, xu, es=0.00001, imax=50):
 def secant(xl, xu, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
+    ea = 0
     print("********Secant********")
     if f(xl) * f(xu) >= 0:
         print("Cannot find a root with in the given interval with Secant")
@@ -77,12 +89,19 @@ def secant(xl, xu, es=0.00001, imax=50):
         iterationsList = []
         for i in range(imax):
             iterations += 1
-            xr = xl - (f(xl) * (xu - xl) / (f(xu) - f(xl)))
-            # xr = ((xl * f(xu) - xu * f(xl)) / (f(xu) - f(xl)))
-
+            try:
+                xr = xl - (f(xl) * (xu - xl) / (f(xu) - f(xl)))
+            except ZeroDivisionError:
+                print("division by zero!")
+                break
             xl = xu
             xu = xr
-            ea = math.fabs((xr - xl) / xr)
+            try:
+                ea = math.fabs((xr - xl) / xr)
+            except ZeroDivisionError:
+                print("division by zero!")
+                break
+
             if ea < es:
                 break
 
@@ -100,6 +119,7 @@ def secant(xl, xu, es=0.00001, imax=50):
 def fixed_point(xi, es=0.00001, imax=50):
     start = timeit.default_timer()
     iterations = 0
+    ea = 0
     print("*******Fixed point*******")
     x = xi
     iterationsList = []
@@ -107,8 +127,11 @@ def fixed_point(xi, es=0.00001, imax=50):
         iterations += 1
         xp = x
         x = f(x)
-        ea = abs((x - xp) / x) * 100
-
+        try:
+            ea = abs((x - xp) / x) * 100
+        except ZeroDivisionError:
+            print("division by zero!")
+            break
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
         if ea < es:
@@ -126,6 +149,7 @@ def newton_raphson(xi, es=0.00001, imax=50):
     print("*******Newton Raphson*******")
     x = xi
     iterationsList = []
+    ea = 0
     for i in range(imax):
         iterations += 1
         fx = f(x)
@@ -135,8 +159,12 @@ def newton_raphson(xi, es=0.00001, imax=50):
             x = x - (fx / derivative(x))
         except ZeroDivisionError:
             print("division by zero!")
-            exit()
-        ea = abs((x - xp) / x) * 100
+            break
+        try:
+            ea = abs((x - xp) / x) * 100
+        except ZeroDivisionError:
+            print("division by zero!")
+            break
         iterationsList.append(
             "Iteration #%d, x = %.16f, f(x) = %.16f and precision: %.16f " % (iterations, x, f(x), ea))
         if ea < es:
@@ -149,22 +177,13 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    return math.e**-x * (3.2*sin(x) - 0.5*cos(x))
+    function = Global.EQN
+    function = function.replace('ln', 'log')
+    function = function.replace('^', '**')
+    function = function.replace('e', 'math.e')
+    return eval(function)
 
 
-def g(x):
-    return math.e ** -x
-
-
-#
-# def f(x):
-#     function = Global.EQN
-#     function = function.replace('ln', 'log')
-#     function = function.replace('^', '**')
-#     function = function.replace('e', 'math.e')
-#     return eval(function)
-#
-#
 # def g(x):
 #     function = 'math.e ** -x'
 #     function = function.replace('ln', 'log')
