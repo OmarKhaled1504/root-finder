@@ -1,6 +1,7 @@
-import math
 import timeit
 import Global
+import math
+from math import sin, cos, tan, log
 
 
 def bisection(xl, xu, es=0.00001, imax=50):
@@ -148,7 +149,7 @@ def newton_raphson(xi, es=0.00001, imax=50):
 
 
 def f(x):
-    return x ** 2
+    return math.e**-x * (3.2*sin(x) - 0.5*cos(x))
 
 
 def g(x):
@@ -161,9 +162,6 @@ def g(x):
 #     function = function.replace('ln', 'log')
 #     function = function.replace('^', '**')
 #     function = function.replace('e', 'math.e')
-#     print(function)
-#     # should be taken as string input from gui
-#     # math.e ** -x - x
 #     return eval(function)
 #
 #
@@ -172,7 +170,6 @@ def g(x):
 #     function = function.replace('ln', 'log')
 #     function = function.replace('^', '**')
 #     function = function.replace('e', 'math.e')
-#     # should be taken as string input from gui
 #     return eval(function)
 
 
@@ -182,11 +179,11 @@ def derivative(x, dx=1e-6):
 
 
 if __name__ == '__main__':
-    xl = -2
+    xl = 3
     xu = 4
     xi = 0
     bisection(xl, xu)
     false_position(xl, xu)
     secant(xl, xu)
-    newton_raphson(xi)
     fixed_point(xi)
+    newton_raphson(xi)
