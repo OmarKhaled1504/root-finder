@@ -358,8 +358,8 @@ class FileScreen(Screen):
         Global.MY_DATA = f.readline()
         if(Global.MY_DATA == 'Bisection\n' or Global.MY_DATA == 'False Position\n' or Global.MY_DATA == 'Secant\n' ):
             xr = ''
-            xl = int(f.readline())
-            xu = int(f.readline())
+            xl = float(f.readline())
+            xu = float(f.readline())
             es = float(f.readline())
             imax = int(f.readline())
             print(Global.EQN)
@@ -464,8 +464,12 @@ class Par2Screen(Screen):
     def callback(self):
         xr = ''
         xi = float(self.ids.xi.text)
-        es = float(self.ids.es.text)
-        imax = int(self.ids.imax.text)
+        es= ''
+        imax = ''
+        if(self.ids.es.text != ''):
+            es = float(self.ids.es.text)
+        if(self.ids.imax.text != ''):
+            imax = int(self.ids.imax.text)
         if (Global.MY_DATA == 'Fixed Point'):
             (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.fixed_point(xi, es, imax)
         elif (Global.MY_DATA == 'Newton-Raphson'):
@@ -482,10 +486,14 @@ class Par2Screen(Screen):
 class Par1Screen(Screen):
     def callback(self):
         xr = ''
-        xl = int(self.ids.xl.text)
-        xu = int(self.ids.xu.text)
-        es = float(self.ids.es.text)
-        imax = int(self.ids.imax.text)
+        xl = float(self.ids.xl.text)
+        xu = float(self.ids.xu.text)
+        es= ''
+        imax = ''
+        if(self.ids.es.text != ''):
+            es = float(self.ids.es.text)
+        if(self.ids.imax.text != ''):
+            imax = int(self.ids.imax.text)
         print(Global.MY_DATA)
         if (Global.MY_DATA == 'Bisection'):
             (xr, Global.OUT_EA, Global.OUT_ITS, Global.OUT_ITERATIONS, Global.OUT_TIME) = main.bisection(xl, xu, es,
